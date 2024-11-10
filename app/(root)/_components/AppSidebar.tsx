@@ -9,16 +9,16 @@ import ReelsLogo from "@/assets/navlogo/reel.png";
 import MessagesLogo from "@/assets/navlogo/message.png";
 import NotificationsLogo from "@/assets/navlogo/like.png";
 import CreateLogo from "@/assets/navlogo/create.png";
-import HomeLogo from "@/assets/navlogo/home.png";
-import ThreadsLogo from "@/assets/navlogo/threads.png";
-import MoreLogo from "@/assets/navlogo/more.png";
+// import HomeLogo from "@/assets/navlogo/home.png";
+// import ThreadsLogo from "@/assets/navlogo/threads.png";
+// import MoreLogo from "@/assets/navlogo/more.png";
 
 import * as React from "react";
-import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
+// import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
 
 import NavUser from "./NavUser";
 
-import { Label } from "@/components/ui/label";
+// import { Label } from "@/components/ui/label";
 import {
   Sidebar,
   SidebarContent,
@@ -26,18 +26,18 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
-  SidebarInput,
+  // SidebarInput,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
+  // useSidebar,
 } from "@/components/ui/sidebar";
-import { Switch } from "@/components/ui/switch";
+// import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
 
-import img from "@/home.png";
+// import img from "@/home.png";
 import Link from "next/link";
-import MobileNav from "./MobileNav";
+// import MobileNav from "./MobileNav";
 
 // This is sample data
 const data = {
@@ -96,9 +96,9 @@ export default function AppSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
-  const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
-  const [mails, setMails] = React.useState(data.mails);
-  const { setOpen } = useSidebar();
+  // const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
+  // const [mails, setMails] = React.useState(data.mails);
+  // const { setOpen } = useSidebar();
 
   return (
     <Sidebar
@@ -150,7 +150,7 @@ export default function AppSidebar({
                 {data.navMain.map((item) => (
                   <SidebarMenuItem key={item.name} className="">
                     <SidebarMenuButton
-                      isActive={activeItem.name === item.name}
+                      // isActive={activeItem.name === item.name}
                       className="px-2.5 md:px-2"
                     >
                       <Image
