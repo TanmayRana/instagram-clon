@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { useState } from "react";
 import axios from "axios";
 import { useSignUp } from "@clerk/nextjs";
@@ -20,9 +20,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 // Form validation schema
-const validationSchema = yup.object({
-  username: yup
-    .string()
+const validationSchema = Yup.object({
+  username: Yup.string()
     .matches(
       /^[a-zA-Z0-9!@#$%^&*()_+={}\[\]:;"'<>,.?/-]*$/,
       "Username can only contain letters, numbers, and special characters."
@@ -31,14 +30,13 @@ const validationSchema = yup.object({
     .max(8, "Username must be at most 8 characters long")
     .required("Username is required"),
 
-  email: yup
-    .string()
+  email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
 
-  password: yup.string().required("Password is required"),
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+  password: Yup.string().required("Password is required"),
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
 });
 
 const Signup = () => {
