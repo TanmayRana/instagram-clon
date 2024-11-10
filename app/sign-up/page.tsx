@@ -517,7 +517,7 @@
 // import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 // // import { useFormik } from "formik";
-// import { useFormik } from "formik";
+// // import { useFormik } from "formik";
 // import * as Yup from "yup";
 // import { useState } from "react";
 // import axios from "axios";
@@ -551,59 +551,54 @@
 //   const [code, setCode] = useState("");
 //   const [isSubmitting, setIsSubmitting] = useState(false);
 //   const router = useRouter();
+//   const [username, setusername] = useState("");
+//   const [email, setemail] = useState("");
+//   const [password, setpassword] = useState("");
+//   const [firstName, setfirstName] = useState("");
+//   const [lastName, setlastName] = useState("");
 
-//   const formik = useFormik({
-//     initialValues: {
-//       username: "",
-//       email: "",
-//       password: "",
-//       firstName: "",
-//       lastName: "",
-//     },
-//     validationSchema,
-//     onSubmit: async (values) => {
-//       setIsSubmitting(true);
-//       try {
-//         // Check if username already exists
-//         const { data: users } = await axios.get("/api/getUser");
+//   const onSubmit = async (values) => {
+//     setIsSubmitting(true);
+//     try {
+//       // Check if username already exists
+//       const { data: users } = await axios.get("/api/getUser");
 
-//         const userExists = users.some(
-//           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//           (user: any) => user.username === values.username
-//         );
-//         if (userExists) {
-//           toast.error("Username already exists");
-//           setIsSubmitting(false);
-//           return;
-//         }
-//         // Create new user with supported parameters
-//         await signUp?.create({
-//           username: values.username,
-//           emailAddress: values.email,
-//           password: values.password,
-//         });
-
-//         // Update user with metadata fields for firstName and lastName
-//         await signUp?.update({
-//           unsafeMetadata: {
-//             firstName: values.firstName,
-//             lastName: values.lastName,
-//           },
-//         });
-
-//         // Prepare email verification
-//         await signUp?.prepareEmailAddressVerification({
-//           strategy: "email_code",
-//         });
-//         setPendingVerification(true);
-//       } catch (err) {
-//         console.error(err);
-//         toast.error("Something went wrong. Please try again.");
-//       } finally {
+//       const userExists = users.some(
+//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//         (user: any) => user.username === values.username
+//       );
+//       if (userExists) {
+//         toast.error("Username already exists");
 //         setIsSubmitting(false);
+//         return;
 //       }
-//     },
-//   });
+//       // Create new user with supported parameters
+//       await signUp?.create({
+//         username: values.username,
+//         emailAddress: values.email,
+//         password: values.password,
+//       });
+
+//       // Update user with metadata fields for firstName and lastName
+//       await signUp?.update({
+//         unsafeMetadata: {
+//           firstName: values.firstName,
+//           lastName: values.lastName,
+//         },
+//       });
+
+//       // Prepare email verification
+//       await signUp?.prepareEmailAddressVerification({
+//         strategy: "email_code",
+//       });
+//       setPendingVerification(true);
+//     } catch (err) {
+//       console.error(err);
+//       toast.error("Something went wrong. Please try again.");
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
 
 //   // Handle email verification
 //   const onPressVerify = async (e: React.FormEvent) => {
@@ -641,7 +636,7 @@
 //         </CardHeader>
 //         <CardContent>
 //           {!pendingVerification ? (
-//             <form onSubmit={formik.handleSubmit} className="grid gap-4">
+//             <form onSubmit={onSubmit} className="grid gap-4">
 //               <div className="grid gap-2 grid-cols-2">
 //                 <div>
 //                   <Label htmlFor="firstName">First Name</Label>
@@ -649,7 +644,8 @@
 //                     id="firstName"
 //                     type="text"
 //                     placeholder="First Name"
-//                     {...formik.getFieldProps("firstName")}
+//                     value={firstName}
+//                     onChange={(e) => setfirstName(e.target.value)}
 //                   />
 //                   {formik.touched.firstName && formik.errors.firstName && (
 //                     <div className="text-red-500 text-sm">
@@ -766,14 +762,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import * as Yup from "yup";
 import { useState } from "react";
-// import axios from "axios";
 import { useSignUp } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 // Form validation schema
 const validationSchema = Yup.object({
@@ -785,15 +778,23 @@ const validationSchema = Yup.object({
     .min(4, "Username must be at least 4 characters long")
     .max(8, "Username must be at most 8 characters long")
     .required("Username is required"),
-
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-
   password: Yup.string().required("Password is required"),
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
 });
+
+type FormData = {
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+type FormErrors = Partial<FormData>;
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -802,60 +803,61 @@ const Signup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(validationSchema),
+  const [formData, setFormData] = useState<FormData>({
+    username: "",
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (values: any) => {
-    setIsSubmitting(true);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      // Check if username already exists
-      // const { data: users } = await axios.get("/api/getUser");
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
 
-      // const userExists = users.some(
-      //   (user) => user.username === values.username
-      // );
-      // if (userExists) {
-      //   toast.error("Username already exists");
-      //   setIsSubmitting(false);
-      //   return;
-      // }
-      // Create new user with supported parameters
+      // Create new user with Clerk
+      setIsSubmitting(true);
       await signUp?.create({
-        username: values.username,
-        emailAddress: values.email,
-        password: values.password,
+        username: formData.username,
+        emailAddress: formData.email,
+        password: formData.password,
       });
 
-      // Update user with metadata fields for firstName and lastName
       await signUp?.update({
         unsafeMetadata: {
-          firstName: values.firstName,
-          lastName: values.lastName,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
         },
       });
 
-      // Prepare email verification
-      await signUp?.prepareEmailAddressVerification({
-        strategy: "email_code",
-      });
+      await signUp?.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong. Please try again.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (validationError: any) {
+      if (validationError.inner) {
+        const newErrors: FormErrors = validationError.inner.reduce(
+          (acc: FormErrors, error: Yup.ValidationError) => {
+            acc[error.path as keyof FormErrors] = error.message;
+            return acc;
+          },
+          {}
+        );
+        setErrors(newErrors);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handle email verification
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onPressVerify = async (e: any) => {
+  const onPressVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoaded) return;
 
@@ -871,8 +873,10 @@ const Signup = () => {
       } else {
         toast.error("Verification failed. Please try again.");
       }
-    } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log("error", error);
+
       toast.error("Verification failed. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -890,19 +894,21 @@ const Signup = () => {
         </CardHeader>
         <CardContent>
           {!pendingVerification ? (
-            <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+            <form onSubmit={handleSubmit} className="grid gap-4">
               <div className="grid gap-2 grid-cols-2">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
                   <Input
                     id="firstName"
+                    name="firstName"
                     type="text"
                     placeholder="First Name"
-                    {...register("firstName")}
+                    value={formData.firstName}
+                    onChange={handleChange}
                   />
                   {errors.firstName && (
                     <div className="text-red-500 text-sm">
-                      {errors.firstName.message}
+                      {errors.firstName}
                     </div>
                   )}
                 </div>
@@ -910,13 +916,15 @@ const Signup = () => {
                   <Label htmlFor="lastName">Last Name</Label>
                   <Input
                     id="lastName"
+                    name="lastName"
                     type="text"
                     placeholder="Last Name"
-                    {...register("lastName")}
+                    value={formData.lastName}
+                    onChange={handleChange}
                   />
                   {errors.lastName && (
                     <div className="text-red-500 text-sm">
-                      {errors.lastName.message}
+                      {errors.lastName}
                     </div>
                   )}
                 </div>
@@ -925,14 +933,14 @@ const Signup = () => {
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
+                  name="username"
                   type="text"
                   placeholder="Username"
-                  {...register("username")}
+                  value={formData.username}
+                  onChange={handleChange}
                 />
                 {errors.username && (
-                  <div className="text-red-500 text-sm">
-                    {errors.username.message}
-                  </div>
+                  <div className="text-red-500 text-sm">{errors.username}</div>
                 )}
               </div>
 
@@ -940,14 +948,14 @@ const Signup = () => {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
-                  {...register("email")}
+                  value={formData.email}
+                  onChange={handleChange}
                 />
                 {errors.email && (
-                  <div className="text-red-500 text-sm">
-                    {errors.email.message}
-                  </div>
+                  <div className="text-red-500 text-sm">{errors.email}</div>
                 )}
               </div>
 
@@ -955,13 +963,13 @@ const Signup = () => {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
-                  {...register("password")}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 {errors.password && (
-                  <div className="text-red-500 text-sm">
-                    {errors.password.message}
-                  </div>
+                  <div className="text-red-500 text-sm">{errors.password}</div>
                 )}
               </div>
 
