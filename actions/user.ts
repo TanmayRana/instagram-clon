@@ -14,6 +14,8 @@ export const createOrUpdateUser = async (data: ClerkUser) => {
   try {
     await dbConnect();
 
+    console.log("user.ts=", data);
+
     const { id, first_name, last_name, image_url, email_addresses, username } =
       data;
 

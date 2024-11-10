@@ -266,8 +266,8 @@ export async function POST(req: Request) {
       email_addresses?: { email: string }[];
       username?: string;
       unsafe_metadata?: {
-        first_name?: string;
-        last_name?: string;
+        firstName?: string;
+        lastName?: string;
       };
     };
 
@@ -276,9 +276,8 @@ export async function POST(req: Request) {
     const userProps: ClerkUser = {
       id: userData.id,
       first_name:
-        userData.unsafe_metadata?.first_name || userData.first_name || "",
-      last_name:
-        userData.unsafe_metadata?.last_name || userData.last_name || "",
+        userData.unsafe_metadata?.firstName || userData.first_name || "",
+      last_name: userData.unsafe_metadata?.lastName || userData.last_name || "",
       image_url: userData.image_url || "",
       email_addresses: userData.email_addresses || [],
       username: userData.username || "",
