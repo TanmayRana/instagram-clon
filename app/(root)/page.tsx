@@ -1,7 +1,12 @@
+"use client";
 import React from "react";
 import Feed from "./_components/Feed";
+import { useUser } from "@clerk/nextjs";
 
-const page = () => {
+const Home = () => {
+  const { user } = useUser();
+  console.log("user=", user);
+
   return (
     <div>
       <Feed />
@@ -9,4 +14,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
