@@ -57,6 +57,8 @@ export async function POST(req: Request) {
   console.log("Webhook body:", body);
 
   if (eventType === "user.created" || eventType === "user.updated") {
+    console.log("evt Data=", evt.data);
+
     const userData = evt.data as unknown as {
       id: string;
       first_name: string;
@@ -74,8 +76,10 @@ export async function POST(req: Request) {
       email_addresses: userData.email_addresses,
       username: userData.username,
     };
+    console.log("userProps=", userProps);
     try {
       const newUser = await createOrUpdateUser(userProps);
+      console.log("newUser=", newUser);
 
       return Response.json(
         {
