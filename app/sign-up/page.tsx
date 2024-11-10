@@ -43,7 +43,7 @@ const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false); // to track form submission state
+  const [isSubmitting, setIsSubmitting] = useState(false); // to track form submission stater
   const router = useRouter();
 
   // Formik setup
