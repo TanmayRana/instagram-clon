@@ -1,0 +1,92 @@
+import img from "@/assets/ProfileImage.png";
+import postImg from "@/assets/insta-promote.webp";
+const instagramFeed = [
+  {
+    id: 1,
+    username: "food.explorer",
+    time: "1h",
+    // profileImg: "https://source.unsplash.com/random/?kitchen",
+    profileImg: img,
+    // postImg: "https://source.unsplash.com/random/?food",
+    // mutualFrndImg1: "https://source.unsplash.com/random/?boy",
+    // mutualFrndImg2: "https://source.unsplash.com/random/?girl",
+    postImg: postImg,
+    mutualFrndImg1: img,
+    mutualFrndImg2: img,
+    likeCount: "2, 00, 000",
+    caption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    commentCount: "100",
+  },
+  {
+    id: 2,
+    username: "nature.lover",
+    time: "1h",
+    // profileImg: "https://source.unsplash.com/random/?adventure",
+    profileImg: img,
+    // postImg: "https://source.unsplash.com/random/?nature",
+    // mutualFrndImg1: "https://source.unsplash.com/random/?girl",
+    // mutualFrndImg2: "https://source.unsplash.com/random/?boy",
+    postImg: postImg,
+
+    mutualFrndImg1: img,
+    mutualFrndImg2: img,
+    likeCount: "2, 00, 000",
+    caption:
+      "Many touriest came nepal from all over the world to explore the beauty of the land & see the amazing natural places.",
+    commentCount: "100",
+  },
+  {
+    id: 3,
+    username: "reelsofworld",
+    time: "1h",
+    // profileImg: "https://source.unsplash.com/random/?videography",
+    profileImg: img,
+    // postImg: "https://source.unsplash.com/random/?sport",
+    // mutualFrndImg1: "https://source.unsplash.com/random/?girl",
+    // mutualFrndImg2: "https://source.unsplash.com/random/?boy",
+    postImg: postImg,
+
+    mutualFrndImg1: img,
+    mutualFrndImg2: img,
+    likeCount: "2, 00, 000",
+    caption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    commentCount: "100",
+  },
+  {
+    id: 4,
+    username: "carlover",
+    time: "1h",
+    // profileImg: "https://source.unsplash.com/random/?luxurycar",
+    profileImg: img,
+    // postImg: "https://source.unsplash.com/random/?car",
+    // mutualFrndImg1: "https://source.unsplash.com/random/?girl",
+    // mutualFrndImg2: "https://source.unsplash.com/random/?boy",
+    postImg: postImg,
+
+    mutualFrndImg1: img,
+    mutualFrndImg2: img,
+    likeCount: "2, 00, 000",
+    caption:
+      "Many touriest came nepal from all over the world to explore the beauty of the land & see the amazing natural places.",
+    commentCount: "100",
+  },
+  {
+    id: 5,
+    username: "godness",
+    time: "1h",
+    // profileImg: "https://source.unsplash.com/random/?godness",
+    profileImg: img,
+    // postImg: "https://source.unsplash.com/random/?god",
+    // mutualFrndImg1: "https://source.unsplash.com/random/?boy",
+    // mutualFrndImg2: "https://source.unsplash.com/random/?girl",
+    postImg: postImg,
+
+    mutualFrndImg1: img,
+    mutualFrndImg2: img,
+    likeCount: "2, 00, 000",
+    caption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    commentCount: "100",
+  },
+];
+
+export default instagramFeed;
