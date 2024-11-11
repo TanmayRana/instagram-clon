@@ -7,6 +7,8 @@ export async function GET() {
 
   try {
     const users = await User.find();
+    if (!users)
+      return Response.json({ message: "No users found" }, { status: 200 });
     return Response.json(
       { message: "Succfully fetched users", users },
       { status: 200 }

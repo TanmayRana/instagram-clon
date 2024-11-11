@@ -17,6 +17,8 @@ import { useSignUp } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+import axios from "axios";
+
 // Form validation schema
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -72,24 +74,45 @@ const Signup = () => {
       await validationSchema.validate(formData, { abortEarly: false });
       setErrors({});
 
+      console.log("formData=", formData);
+
       // Create new user with Clerk
       setIsSubmitting(true);
-      const user = await signUp?.create({
+      const getUsers = await axios.get("/api/getUser");
+      console.log("existingUser=", getUsers.data.users);
+      const usersData = getUsers.data.users;
+      if (usersData !== 200) return;
+
+      const existingUser = usersData.find(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (user: any) => user.email === formData.email
+      );
+
+      if (existingUser) {
+        toast.error("User already exists");
+        return;
+      }
+
+      const userExists = usersData.some(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (user: any) => user.username === formData.username
+      );
+      if (userExists) {
+        toast.error("Username already exists");
+        return;
+      }
+      await signUp?.create({
         username: formData.username,
         emailAddress: formData.email,
         password: formData.password,
       });
 
-      console.log("user=", user);
-
-      const user2 = await signUp?.update({
+      await signUp?.update({
         unsafeMetadata: {
           firstName: formData.firstName,
           lastName: formData.lastName,
         },
       });
-
-      console.log("user2=", user2);
 
       await signUp?.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);

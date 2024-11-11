@@ -1,5 +1,8 @@
 import User from "@/models/user.model";
 import dbConnect from "@/util/DB/dbConnect";
+// import { clerkClient } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs/server";
+// import { clerkClient } from "@clerk/clerk-sdk-node";
 
 export interface ClerkUser {
   id: string;
