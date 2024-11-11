@@ -206,7 +206,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { ClerkUser, createOrUpdateUser } from "@/actions/user";
+import { ClerkUser, createOrUpdateUser, deleteUser } from "@/actions/user";
 
 export async function POST(req: Request) {
   // Retrieve the WEBHOOK_SECRET from environment variables
@@ -301,6 +301,27 @@ export async function POST(req: Request) {
         JSON.stringify({ message: "Error creating or updating user" }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
+    }
+  }
+
+  if (eventType === "user.deleted") {
+    const { id } = evt.data as { id: string };
+
+    try {
+      await deleteUser(id);
+      return Response.json(
+        {
+          message: "User deleted",
+          headers: { "Content-Type": "application/json" },
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      return new Response(JSON.stringify({ message: "Error deleting user" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
   }
 

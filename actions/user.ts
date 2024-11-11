@@ -1,8 +1,5 @@
 import User from "@/models/user.model";
 import dbConnect from "@/util/DB/dbConnect";
-// import { clerkClient } from "@clerk/nextjs";
-import { clerkClient } from "@clerk/nextjs/server";
-// import { clerkClient } from "@clerk/clerk-sdk-node";
 
 export interface ClerkUser {
   id: string;
@@ -41,5 +38,15 @@ export const createOrUpdateUser = async (data: ClerkUser) => {
   } catch (error) {
     console.error("Error creating or updating user:", error);
     throw new Error("Failed to create or update user");
+  }
+};
+
+export const deleteUser = async (id: string): Promise<void> => {
+  try {
+    await dbConnect();
+
+    await User.findOneAndDelete({ clerkId: id });
+  } catch (error) {
+    console.error("Error deleting user:", error);
   }
 };
