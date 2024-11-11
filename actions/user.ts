@@ -20,6 +20,7 @@ export const createOrUpdateUser = async (data: ClerkUser) => {
       data;
 
     const email = email_addresses.length > 0 ? email_addresses[0].email : "";
+    console.log("createOrUpdateUser email=", email);
 
     const user = await User.findOneAndUpdate(
       { clerkId: id },
@@ -33,6 +34,7 @@ export const createOrUpdateUser = async (data: ClerkUser) => {
       },
       { new: true, upsert: true }
     );
+    console.log("createOrUpdateUser user=", user);
 
     return user;
   } catch (error) {
