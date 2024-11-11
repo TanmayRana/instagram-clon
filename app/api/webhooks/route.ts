@@ -394,6 +394,7 @@ export async function POST(req: Request) {
       unsafe_metadata?: {
         firstName?: string | null;
         lastName?: string | null;
+        fullName?: string | null;
       };
     }
 
@@ -407,6 +408,7 @@ export async function POST(req: Request) {
       image_url: userData.image_url || "",
       email_addresses: userData.email_addresses || "",
       username: userData.username || "",
+      fullName: userData.unsafe_metadata?.fullName || "",
     };
     console.log("User properties:", userProps);
 

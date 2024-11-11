@@ -63,6 +63,7 @@ export interface ClerkUser {
   image_url: string;
   email_addresses: { email_address: string }[];
   username?: string;
+  fullName?: string;
 }
 
 export const createOrUpdateUser = async (
@@ -73,8 +74,15 @@ export const createOrUpdateUser = async (
 
     console.log("user.ts=", data);
 
-    const { id, first_name, last_name, image_url, email_addresses, username } =
-      data;
+    const {
+      id,
+      first_name,
+      last_name,
+      image_url,
+      email_addresses,
+      username,
+      fullName,
+    } = data;
 
     // Extract primary email if it exists, otherwise default to an empty string
     const email =
@@ -90,6 +98,7 @@ export const createOrUpdateUser = async (
         lastName: last_name,
         username: username || "", // Default to empty string if username is undefined
         avatar: image_url,
+        fullName: fullName || "",
       },
       { new: true, upsert: true }
     );

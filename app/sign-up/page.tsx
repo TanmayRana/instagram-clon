@@ -109,6 +109,7 @@ const Signup = () => {
         unsafeMetadata: {
           firstName: formData.firstName,
           lastName: formData.lastName,
+          fullName: `${formData.firstName} ${formData.lastName}`,
         },
       });
 
